@@ -3,7 +3,7 @@
         <form @submit.prevent="login">
             <div class="container">
                 <label for="emailInput"><b>اسم المستخدم</b></label><br>
-                <input type="email" placeholder="Email Address" id="emailInput"
+                <input type="email" placeholder="Enter Email Address" id="emailInput"
                        aria-describedby="emailHelp" class="form-control" v-model="username">
                 <br><br>
                 <label for="passwordInput"><b>كلمة المرور</b></label><br>
@@ -12,7 +12,7 @@
                 <br><br>
                 <button type="submit" class="btn btn-primary" >تسجيل الدخول</button>
                 <br><br><label>
-                    <input type="checkbox" checked="checked" name="remember"> تذكرني
+                    <input type="checkbox"  name="remember"> تذكرني
                 </label>
             </div>
         </form>

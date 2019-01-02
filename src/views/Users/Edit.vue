@@ -26,6 +26,18 @@
           <label for="input-ext">: التحويلة</label>
           <input v-model="form.ext" type="text" class="form-control" id="input-ext" aria-describedby="extHelp" placeholder="أدخل رقم التحويلة">
         </div>
+        <div class="form-group">
+          <label for="input-image"> : الصورة الشخصية</label>
+          <div id="input-image" style="display: flex; justify-content: center;">
+            <vue-upload-multiple-image
+                    @upload-success="uploadImageSuccess"
+                    @before-remove="beforeRemove"
+                    @edit-image="editImage"
+                    @data-change="dataChange"
+                    :data-images="profile_picture"
+            ></vue-upload-multiple-image>
+          </div>
+        </div>
         <button type="submit" class="btn btn-primary">حـفظ</button>
         <button type="button" class="btn btn-link" @click="goBack">إلـغاء</button>
       </form>
@@ -35,7 +47,8 @@
 
 <script>
   import {get, update} from "../../services/EmployeeService";
-
+  import VueUploadMultipleImage from 'vue-upload-multiple-image'
+  import axios from 'axios'
   export default {
       data() {
           return {
@@ -45,7 +58,9 @@
                   empname: '',
                   deptname: '',
                   email: '',
-                  ext: ''
+                  ext: '',
+                  profile_picture: [],
+                  resume: null
               }
           }
       },
@@ -53,7 +68,31 @@
           const pk = this.$route.params.pk;
           get(pk).then(res => this.form = res.data);
       },
+    components: {
+      VueUploadMultipleImage
+    },
       methods: {
+        uploadImageSuccess(formData, index, fileList) {
+          console.log('data', formData, index, fileList)
+          // Upload image api
+          axios.put(`http://192.168.0.192:818/employee/${this.form.pk}/update/`, { data: formData }).then(response => {
+            console.log(response)
+          })
+        },
+        beforeRemove (index, done, fileList) {
+          console.log('index', index, fileList)
+          const r = confirm("remove image");
+          if (r == true) {
+            done()
+          } else {
+          }
+        },
+        editImage (formData, index, fileList) {
+          console.log('edit data', formData, index, fileList)
+        },
+        dataChange (data) {
+          console.log(data)
+        },
           save() {
               update(this.form.pk, this.form).then(res => console.log(res));
               this.goBack();
