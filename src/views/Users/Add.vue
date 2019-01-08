@@ -20,24 +20,26 @@
         </div>
         <div class="form-group">
           <label for="input-email">: البريد الالكتروني</label>
-          <input v-model="form.email" type="email" class="form-control" id="input-email" aria-describedby="emailHelp" placeholder="أدخل البريد الالكتوني" required>
+          <input v-model="form.email" type="email" class="form-control" id="input-email" aria-describedby="emailHelp" placeholder="أدخل البريد الالكتوني"required>
         </div>
         <div class="form-group">
           <label for="input-ext">: التحويلة</label>
           <input v-model="form.ext" type="text" class="form-control" id="input-ext" aria-describedby="extHelp" placeholder="أدخل رقم التحويلة">
         </div>
+
         <div class="form-group">
           <label for="input-resume">: السيرة الذاتية</label><br>
-          <input type="file" @change="onFileChanged" id="input-resume"><br>
-          <button @click="onUpload">Upload!</button>
+          <input type="file" id="input-resume" class="form-control" ref="resume" accept="application/pdf">
         </div>
+
         <div class="form-group">
           <label for="input-profile_picture">: الصورة الشخصية</label><br>
-          <input type="file" @change="onFileChanged" id="input-profile_picture"><br>
-          <button @click="onUpload">Upload!</button>
-        </div>
+          <input type="file" id="input-profile_picture" class="form-control" ref="profilePicture" accept="image/*">
+        </div><br><br>
+
         <button type="submit" class="btn btn-primary">حـفظ</button>
         <button type="button" class="btn btn-link" @click="goBack">إلـغاء</button>
+
       </form>
     </div>
   </div>
@@ -61,28 +63,23 @@
       }
     },
     methods: {
-      onFileChanged (event) {
-        const files = event.target.files || event.dataTransfer.files;
-        if (!files.length)
-          return;
-        this.createImage(files[0]);
-      },
-      createImage(file) {
-        const image = new Image();
-        const reader = new FileReader();
-        const vm = this;
-        reader.onload = (e) => {
-          vm.image = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      },
-      onUpload(){
-        const formData = new FormData()
-        formData.append('myFile', this.profile_picture, this.profile_picture.name)
-        axios.post('http://192.168.0.192:818/add-employee/', formData)
-      },
       save() {
-        add(this.form).then(res => console.log(res));
+        var photo = this.$refs.profilePicture.files[0];
+        var resume = this.$refs.resume.files[0];
+
+        var fd = new FormData();
+        fd.append('empid', this.form.empid);
+        fd.append('empname', this.form.empname);
+        fd.append('deptname', this.form.deptname);
+        fd.append('email', this.form.email);
+        fd.append('ext', this.form.ext);
+        fd.append('profile_picture', photo);
+        fd.append('resume', resume);
+
+        add(fd, {headers:{
+            'Content-type': 'multipart/form-data'
+          }
+        }).then(res => console.log(res));
         this.goBack();
       },
       goBack() {

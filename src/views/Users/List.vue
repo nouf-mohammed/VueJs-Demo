@@ -4,15 +4,20 @@
 
   </div>
     <router-link to="/users/add" class="btn btn-dark">إضافة مستخدم</router-link><br><br>
-    <div class="container">
 
-      <table>
+    <div class="container">
+      <form class="form-inline active-pink-3 active-pink-4">
+        <input v-model="searchName" class="form-control form-control-sm ml-3 w-75" type="text" placeholder="بحث" aria-label="Search">
+        <button @click="searchName()"><i class="fa fa-search" aria-hidden="true"></i></button>
+      </form>
+      <br>
+      <table  data-sort="false" data-page-size="50">
         <thead >
         <tr>
-          <th scope="col">تعديل</th>
           <th scope="col">حذف</th>
-          <th scope="col">الصورة الشخصية </th>
+          <th scope="col">تعديل</th>
           <th scope="col">السيرة الذاتية </th>
+          <th scope="col">الصورة الشخصية</th>
           <th scope="col">التحويلة </th>
           <th scope="col">الإدارة</th>
           <th scope="col">البريد الالكتروني</th>
@@ -23,10 +28,14 @@
         </thead>
         <tbody>
           <tr v-for="(user, index) in this.$store.state.users">
-            <td><router-link :to="'/user/'+user.pk"><i class="fa fa-pencil"></i></router-link></td>
             <td><button type="button" @click="del(user.pk)"><i class="fa fa-trash"></i></button></td>
-            <td>{{user.profile_picture}}</td>
-            <td>{{user.resume}}</td>
+            <td><router-link :to="'/user/'+user.pk"><i class="fa fa-edit"></i></router-link></td>
+            <td><div v-if="user.profile_picture !=null">
+              <i class="fa fa-paperclip"></i>
+            </div></td>
+            <td><div v-if="user.resume !=null">
+              <i class="fa fa-paperclip"></i>
+            </div></td>
             <td>{{user.ext}}</td>
             <td>{{user.deptname}}</td>
             <td>{{user.email}}</td>
@@ -35,7 +44,8 @@
             <th scope="row">{{index+1}}</th>
           </tr>
         </tbody>
-      </table><br><br><br>
+      </table><br><br>
+      <br><br>
     </div>
   </div>
 </template>
@@ -46,15 +56,18 @@
   export default {
     data(){
       return{
-        sortKey: 'empname',
-        reverse: false,
-        search: '',
+        users: [],
+        searchName : '',
+        currentPage: 3
       }
     },
     mounted() {
       loadEmployees();
     },
     methods: {
+      searchEmp(name){
+
+      },
       del(pk) {
         del(pk).then(res => {
           loadEmployees();
