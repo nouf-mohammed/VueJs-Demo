@@ -16,6 +16,9 @@ export async function update(pk, user){
 export async function del(pk){
     return await http().delete(`employee/${pk}/delete`);
 }
+export async function search(query){
+    return await http().get(`find-employee?query=`+ query);
+}
 
 export async function loadEmployees(){
     getAll().then(res => {

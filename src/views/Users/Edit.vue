@@ -12,7 +12,7 @@
             <img :src="form.profile_picture" alt="" class="center">
             <a :href="form.profile_picture" download class="fa fa-download"></a><br><br>
           </div>
-          <input type="file"  id="input-profile_picture" ref="profilePicture" accept="image/*" class="form-control"><br>
+          <input type="file"  id="input-profile_picture" ref="profilePicture" accept="image/*" class="form-control" required><br>
         </div>
         </div>
 
@@ -22,7 +22,7 @@
          </div>
         <div class="form-group">
           <label for="input-id">: رقم الهوية</label>
-          <input v-model="form.empid" type="text" class="form-control" id="input-id" aria-describedby="idHelp" placeholder="أدخل رقم الهوية الخاص بالموظف" required>
+          <input v-model="form.empid" type="text" class="form-control" id="input-id" aria-describedby="idHelp" placeholder="أدخل رقم الهوية الخاص بالموظف" disabled>
         </div>
 
         <div class="form-group">
@@ -32,12 +32,25 @@
 
         <div class="form-group">
           <label for="input-deptname">: الإدارة</label>
-          <input v-model="form.deptname" type="text" class="form-control" id="input-deptname" aria-describedby="deptnameHelp" placeholder="أدخل إلإدارة التي يتبعها الموظف">
+            <select id="input-deptname" v-model="form.deptname" class="form-control">
+                <option value="" disabled selected>الإدارة التي يتبعها الموظف</option>
+                <option>إدارة ضمان الجودة </option><option>مكتب نائب الرئيس للأعمال الإحصائية</option><option>إدارة التوثيق والأرشفة </option>
+                <option>إدارة إحصاءات البيئة</option><option>إدارة المشتريات  </option><option>الإدارة العامة للإعلام والوعي الإحصائي </option>
+                <option>إدارة إحصاءات الخدمات الحكومية و الجغرافية</option><option>وكيل الخدمات الإحصائية </option><option>إدارة إحصاءات الزراعة</option>
+                <option>الإدارة العامة للتقارير العامة</option><option>إدارة المرافق والخدمات الإدارية</option><option>الإدارة العامة للفروع</option>
+                <option>إدارة تنسيق العمل الميداني</option><option>وكيل الشؤون الإدارية والمالية</option><option>الإدارة  العامة للعلاقات ودعم العملاء</option>
+                <option>إدارة إستراتيجية الموارد البشرية</option><option>الإدارة العامة للإبتكار والتطوير الإحصائي</option><option>إدارة إحصاءات الأسعار</option>
+                <option>إدارة الاتصالات الإدارية </option><option>إدارة إحصاءات التجارة الخارجية</option><option>مكتب نائب الرئيس للأعمال الإحصائية</option>
+                <option>الإدارة العامة للمشاريع والتخطيط الإستراتيجي </option><option>إدارة الشبكات والإتصالات</option><option>إدارة الدعم الفني</option>
+                <option>إدارة دعم قواعد البيانات</option><option>إدارة تطوير التطبيفات</option><option>إدارة الخدمات الالكترونية وإدارة البيانات</option>
+                <option>الإدارة العامة للإعلام والوعي الإحصائي</option><option>إدارة دعم المنهجيات الإحصائية</option><option>إدارة إحصاءات المال و الاستثمار</option>
+                <option>الإدارة العامة للبنية التحتية</option><option>الإدارة العامة للتحليل الاحصائي</option><option>القسم النسوي</option>
+            </select>
         </div>
 
         <div class="form-group">
           <label for="input-email">: البريد الالكتروني</label>
-          <input v-model="form.email" type="email" class="form-control" id="input-email" aria-describedby="emailHelp" placeholder="أدخل البريد الالكتوني">
+          <input v-model="form.email" type="email" class="form-control" id="input-email" aria-describedby="emailHelp" placeholder="أدخل البريد الالكتوني" required>
         </div>
         <div class="form-group">
           <label for="input-ext">: التحويلة</label>
@@ -46,7 +59,7 @@
 
         <div class="form-group">
           <label for="input-resume">: السيرة الذاتية</label><br>
-          <input type="file" id="input-resume" class="form-control" ref="resume" accept="application/pdf">
+          <input type="file" id="input-resume" class="form-control" ref="resume" accept="application/pdf" required>
           <div v-if="form.resume !=null">
             <a :href="form.resume" download class="fa fa-download"></a>
           </div>
@@ -62,8 +75,6 @@
 
 <script>
   import {get, update} from "../../services/EmployeeService";
-  import VueUploadMultipleImage from 'vue-upload-multiple-image'
-  import axios from 'axios'
   export default {
       data() {
           return {
@@ -118,6 +129,9 @@
   }
   input[type=file] {
     text-align: left;
+  }
+  select{
+      text-align: right;
   }
   form {
     text-align: right;

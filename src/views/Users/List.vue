@@ -6,12 +6,14 @@
     <router-link to="/users/add" class="btn btn-dark">إضافة مستخدم</router-link><br><br>
 
     <div class="container">
-      <form class="form-inline active-pink-3 active-pink-4">
-        <input v-model="searchName" class="form-control form-control-sm ml-3 w-75" type="text" placeholder="بحث" aria-label="Search">
-        <button @click="searchName()"><i class="fa fa-search" aria-hidden="true"></i></button>
+
+      <form class="form-inline active-cyan-3 active-cyan-4">
+         <button @click.prevent="searchEmp" class="unstyled-button" type="submit"><i @click.prevent="searchEmp" class="fa fa-search" aria-hidden="true"></i></button>
+        <input v-model="query" class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search">
       </form>
       <br>
-      <table  data-sort="false" data-page-size="50">
+
+      <table>
         <thead >
         <tr>
           <th scope="col">حذف</th>
@@ -21,7 +23,7 @@
           <th scope="col">التحويلة </th>
           <th scope="col">الإدارة</th>
           <th scope="col">البريد الالكتروني</th>
-          <th scope="col">الأسم</th>
+          <th scope="col"> الأسم </th>
           <th scope="col">رقم الهوية</th>
           <th scope="col">#</th>
         </tr>
@@ -30,12 +32,17 @@
           <tr v-for="(user, index) in this.$store.state.users">
             <td><button type="button" @click="del(user.pk)"><i class="fa fa-trash"></i></button></td>
             <td><router-link :to="'/user/'+user.pk"><i class="fa fa-edit"></i></router-link></td>
-            <td><div v-if="user.profile_picture !=null">
-              <i class="fa fa-paperclip"></i>
-            </div></td>
-            <td><div v-if="user.resume !=null">
-              <i class="fa fa-paperclip"></i>
-            </div></td>
+            <td>
+              <span v-if="user.resume != null">
+                <i class="fa fa-paperclip"></i>
+              </span>
+            </td>
+            <td>
+              <div v-if="user.resume !=null">
+                <i class="fa fa-paperclip"></i>
+              </div>
+
+            </td>
             <td>{{user.ext}}</td>
             <td>{{user.deptname}}</td>
             <td>{{user.email}}</td>
@@ -45,28 +52,30 @@
           </tr>
         </tbody>
       </table><br><br>
-      <br><br>
+      <br>
     </div>
   </div>
 </template>
 
 <script>
-  import {del, loadEmployees} from "../../services/EmployeeService";
-
+  import {del, loadEmployees, search} from "../../services/EmployeeService";
+  import store from '@/store'
   export default {
     data(){
       return{
         users: [],
-        searchName : '',
-        currentPage: 3
+        query:''
       }
     },
     mounted() {
-      loadEmployees();
+       loadEmployees();
     },
     methods: {
-      searchEmp(name){
-
+      searchEmp() {
+        var query = this.query;
+        search(query).then(res => {
+          this.$store.state.users = res.data.result ;
+        })
       },
       del(pk) {
         del(pk).then(res => {
@@ -80,8 +89,8 @@
 <style>
   .container .btn:hover {
     background-color: black;
-    text-align: center;
   }
+
   .actionbar {
     margin-bottom: 20px;
     text-align: left;
@@ -106,5 +115,11 @@
   table#t01 th {
     background-color: #000000;
     color: #000000;
+  }
+  .unstyled-button {
+    border: none;
+    padding: 0;
+    background: none;
+    cursor: pointer;
   }
 </style>

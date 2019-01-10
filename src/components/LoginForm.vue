@@ -3,17 +3,15 @@
         <form @submit.prevent="login">
             <div class="container">
                 <label for="emailInput"><b>اسم المستخدم</b></label><br>
-                <input type="email" placeholder="Enter Email Address" id="emailInput"
-                       aria-describedby="emailHelp" class="form-control" v-model="username">
+                <input type="email" placeholder="البريد الالكتروني" id="emailInput"
+                       aria-describedby="emailHelp" class="form-control" v-model="username" required>
                 <br><br>
                 <label for="passwordInput"><b>كلمة المرور</b></label><br>
-                <input type="password" placeholder="Enter Password" id="passwordInput"
+                <input type="password" placeholder="كلمة المرور" id="passwordInput"
                        name="password" class="form-control" v-model="password" required>
                 <br><br>
                 <button type="submit" class="btn btn-primary" >تسجيل الدخول</button>
-                <br><br><label>
-                    <input type="checkbox"  name="remember"> تذكرني
-                </label>
+                <br><br>
             </div>
         </form>
     </div>
