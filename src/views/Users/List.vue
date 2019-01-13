@@ -8,7 +8,7 @@
     <div class="container">
 
       <form class="form-inline active-cyan-3 active-cyan-4">
-         <button @click.prevent="searchEmp" class="unstyled-button" type="submit"><i @click.prevent="searchEmp" class="fa fa-search" aria-hidden="true"></i></button>
+         <button @click.prevent="searchEmp" class="unstyled-button" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
         <input v-model="query" class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search">
       </form>
       <br>
